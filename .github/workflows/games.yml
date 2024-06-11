@@ -35,4 +35,4 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            ghcr.io/SKY0709/games:${{ matrix.game }}
+            ghcr.io/sky0709/games:${{ matrix.game }}
