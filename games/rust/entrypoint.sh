@@ -4,10 +4,9 @@ cd /home/container
 # Make internal Docker IP address available to processes.
 export INTERNAL_IP=`ip route get 1 | awk '{print $(NF-2);exit}'`
 
-
-## if auto_update is not set or to 1 update
+# if auto_update is not set or to 1 update
 if [ -z ${AUTO_UPDATE} ] || [ "${AUTO_UPDATE}" == "1" ]; then
-	./steamcmd/steamcmd.sh +force_install_dir /home/container +login anonymous +app_update 258550 +quit
+    ./steamcmd/steamcmd.sh +force_install_dir /home/container +login anonymous +app_update 258550 +quit
 else
     echo -e "Not updating game server as auto update was set to 0. Starting Server"
 fi
@@ -26,7 +25,7 @@ if [[ "${FRAMEWORK}" == "carbon" ]]; then
     export DOORSTOP_TARGET_ASSEMBLY="$(pwd)/carbon/managed/Carbon.Preloader.dll"
     MODIFIED_STARTUP="LD_PRELOAD=$(pwd)/libdoorstop.so ${MODIFIED_STARTUP}"
 
-elif [[ "$OXIDE" == "1" ]] || [[ "${FRAMEWORK}" == "oxide" ]]; then
+elif [[ "${AUTO_UPDATE}" == "1" && ("${OXIDE}" == "1" || "${FRAMEWORK}" == "oxide") ]]; then
     # Oxide: https://github.com/OxideMod/Oxide.Rust
     echo "Updating uMod..."
     curl -sSL "https://github.com/OxideMod/Oxide.Rust/releases/latest/download/Oxide.Rust-linux.zip" > umod.zip
